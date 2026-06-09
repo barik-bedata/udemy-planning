@@ -1,32 +1,16 @@
-from manim import *
+**Got it!** আপনার দেওয়া `CourseTheme` এর অরিজিনাল টেমপ্লেট কোডটিতে আমি আমাদের আগের আলোচনার আপডেটগুলো (Dot Radius, Dot Color, Scene Title Size, Scene Title Color এবং তাদের Getters) যুক্ত করে দিয়েছি।
 
+`CourseAnimator` এবং `DemoScene` অপরিবর্তিত রাখা হয়েছে, তবে থিমটি এখন যেকোনো সিনের (যেমন আপনার `Statement` সিন) টপ-লেফট টাইটেল এবং ডট রেন্ডার করার জন্য পুরোপুরি রেডি।
+
+নিচে আপডেট করা সম্পূর্ণ কোডটি দেওয়া হলো:
+
+```python
+from manim import *
 
 # ═══════════════════════════════════════════════════════════════════
 #  CourseTheme
 #  Single source of truth for ALL colors, typography, and semantic
 #  roles — sourced directly from color-phycology-v2.md spec.
-#
-#  Color semantic roles:
-#    BACKGROUND  #121212   Matte black, eye-comfort dark mode
-#    BLUE        #1A73E8   Neutral / Scanning / Processing
-#    GREEN       #198754   Success / Correct / Target Found  ← ONLY for final answer
-#    RED         #DC3545   Error / Not Found / Null pointer
-#    YELLOW      #EAB308   Active Focus / Current Step / Pointer
-#    ORANGE      #F97316   Warning / Already Visited / Backtrack  ← NOT green
-#    WHITE       #E0E0E0   Static / Label / Neutral text
-#    GRAY        #424242   Inactive / Background element
-#
-#  Typography rule:
-#    Dark/Blue/Red/Green fill  → text WHITE  (#FFFFFF)
-#    Yellow/Bright fill        → text BLACK  (#000000)
-#
-#  Public API (read-only getters — nothing can be set from outside):
-#    bg()  node_blue()  node_green()  node_red()  node_yellow()
-#    node_orange()  node_white()  node_gray()
-#    text_on_dark()  text_on_yellow()  text_white()  text_gray()
-#    font()  font_code()
-#    font_size_title()  font_size_body()  font_size_label()  font_size_small()
-#    stroke_width()
 # ═══════════════════════════════════════════════════════════════════
 class CourseTheme:
 
@@ -42,7 +26,7 @@ class CourseTheme:
     __PURE_WHITE = "#FFFFFF"   # text on dark/blue/red/green fills
     __PURE_BLACK = "#000000"   # text on yellow/bright fills
 
-    # ── typography ───────────────────────────────────────────────
+    # ── typography & sizes ───────────────────────────────────────
     __FONT_UI   = "Inter"
     __FONT_CODE = "Fira Code"
     __FS_TITLE  = 52
@@ -50,6 +34,12 @@ class CourseTheme:
     __FS_LABEL  = 24
     __FS_SMALL  = 20
     __STROKE    = 2.5   # 2px–3px per spec for crisp 480p+ video
+
+    # ── Scene Title & Dot variables (NEW) ────────────────────────
+    __DOT_RADIUS        = 0.18       # অপটিমাইজড সাইজ (টেক্সটের সাথে ব্যালেন্সড)
+    __DOT_COLOR         = __WHITE    
+    __SCENE_TITLE_SIZE  = 32         
+    __SCENE_TITLE_COLOR = __WHITE    
 
     # ── background ───────────────────────────────────────────────
     def bg(self)              -> str:   return self.__BG
@@ -69,7 +59,7 @@ class CourseTheme:
     def text_white(self)      -> str:   return self.__WHITE
     def text_gray(self)       -> str:   return self.__GRAY
 
-    # ── typography ───────────────────────────────────────────────
+    # ── typography & sizes ───────────────────────────────────────
     def font(self)             -> str:  return self.__FONT_UI
     def font_code(self)        -> str:  return self.__FONT_CODE
     def font_size_title(self)  -> int:  return self.__FS_TITLE
@@ -78,19 +68,17 @@ class CourseTheme:
     def font_size_small(self)  -> int:  return self.__FS_SMALL
     def stroke_width(self)     -> float: return self.__STROKE
 
+    # ── Scene Title & Dot Getters (NEW) ──────────────────────────
+    def dot_radius(self)        -> float: return self.__DOT_RADIUS
+    def dot_color(self)         -> str:   return self.__DOT_COLOR
+    def scene_title_size(self)  -> int:   return self.__SCENE_TITLE_SIZE
+    def scene_title_color(self) -> str:   return self.__SCENE_TITLE_COLOR
+
 
 # ═══════════════════════════════════════════════════════════════════
 #  CourseAnimator
 #  Takes a Scene + CourseTheme. All color/font choices come from
 #  the theme — nothing is hardcoded here.
-#
-#  Public API:
-#    play_intro(title, subtitle)
-#    play_section_title(section, number)
-#    play_callout(text, position)
-#    play_lower_third(name, role)
-#    play_outro(message)
-#    clear_screen()
 # ═══════════════════════════════════════════════════════════════════
 class CourseAnimator:
 
@@ -240,7 +228,7 @@ class CourseAnimator:
 class DemoScene(Scene):
 
     def construct(self):
-        theme = CourseTheme()           # ← single source of all colors/fonts
+        theme = CourseTheme()            # ← single source of all colors/fonts
         anim  = CourseAnimator(self, theme)
 
         # ── intro ─────────────────────────────────────────────────
@@ -312,3 +300,5 @@ class DemoScene(Scene):
         # ── lower third + outro ───────────────────────────────────
         anim.play_lower_third(name="Barik", role="DSA Instructor")
         anim.play_outro("See you in the next lesson!")
+
+```
