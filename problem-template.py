@@ -1,9 +1,3 @@
-**Got it!** আপনার দেওয়া `CourseTheme` এর অরিজিনাল টেমপ্লেট কোডটিতে আমি আমাদের আগের আলোচনার আপডেটগুলো (Dot Radius, Dot Color, Scene Title Size, Scene Title Color এবং তাদের Getters) যুক্ত করে দিয়েছি।
-
-`CourseAnimator` এবং `DemoScene` অপরিবর্তিত রাখা হয়েছে, তবে থিমটি এখন যেকোনো সিনের (যেমন আপনার `Statement` সিন) টপ-লেফট টাইটেল এবং ডট রেন্ডার করার জন্য পুরোপুরি রেডি।
-
-নিচে আপডেট করা সম্পূর্ণ কোডটি দেওয়া হলো:
-
 ```python
 from manim import *
 
