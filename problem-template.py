@@ -1,4 +1,3 @@
-```python
 from manim import *
 
 # ═══════════════════════════════════════════════════════════════════
@@ -294,5 +293,3 @@ class DemoScene(Scene):
         # ── lower third + outro ───────────────────────────────────
         anim.play_lower_third(name="Barik", role="DSA Instructor")
         anim.play_outro("See you in the next lesson!")
-
-```
