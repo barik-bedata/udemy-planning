@@ -108,3 +108,74 @@
 
 ---
 **Note:** এই ব্লু-প্রিন্টটি পুরো কোর্সের প্রতিটি মডিউলে (Arrays, Linked Lists, Trees, Graphs, DP) হুবহু ফলো করা হবে। নতুন কোনো স্টেট বা সিনারিও তৈরি হলে এই গাইডের এক্সটেনশন যোগ করা হবে।
+
+
+
+# 📂 Reorganized Section Architecture Template
+
+## 🧩 Section: Linked Lists (Example Layout)
+
+### 🎬 1. Section Intro & Roadmap Video (Duration: 1.5 - 2 Mins)
+* . **Status Tracker:** `◽ SECTION OVERVIEW` (75% Opacity, No Color Dot)
+* . **Visual Flow:** স্ক্রিনে একটি প্রোগ্রেসিভ "Visual Roadmap Timeline" অ্যানিমেট হবে। টাইমলাইনের প্রতিটি নোড বা পয়েন্টে একটি করে প্রবলেমের নাম পপ-আপ করবে (যেমন: Basic Traversal → Two-Pointer Techniques → Reversal Patterns)। এটি স্টুডেন্টকে পুরো সেকশনের একটি বার্ডস-আই ভিউ (Bird's-eye view) দেবে।
+* . **Core Goal:** কেন লিংকড লিস্ট শিখছি এবং এই মেমোরি মডেলটি আমাদের রিয়েল-লাইফে কোথায় কাজে লাগে তা ভিজ্যুয়ালি ফিল করানো।
+
+---
+
+### 🎥 2. Problem 1: [e.g., Find Middle of Linked List] (Easy)
+* . **6-Step Sub-Flow:**
+    * * ⚪ `PROBLEM ANALYSIS` (Statement & Example Explanation)
+    * * 🔴 `BRUTE FORCE` ──> Delayed Bottom-Right Complexity: Time: O(N) | Space: O(1)
+    * * The Clean Wipe (Screen clears 100%)
+    * * 🟡 `OPTIMAL APPROACH` ──> Delayed Bottom-Right Complexity: Time: O(N/2) | Space: O(1)
+    * * 🔵 `CODE WALKTHROUGH` (VS Code Highlighting synced with Animation)
+    * * 🟢 `CODE SUBMISSION` (LeetCode Accepted Dopamine Hit)
+* . **📂 Embedded Resource Room (LMS/Platform-এ ভিডিওর ঠিক নিচে):**
+    * * `<> Language-Specific Practice Arena:` এই প্রবলেমটির সলিউশন কোড (C++, Java, Python, JavaScript) আলাদা ট্যাব আকারে থাকবে।
+    * * `<> Parallel Coding Exercise:` ঠিক একই লজিকের আরেকটি সিমিলার প্রবলেম লিংক দেওয়া থাকবে (যেমন: LeetCode 19 - Remove Nth Node From End of List) যাতে স্টুডেন্ট নিজে কোড করে সাবমিট করতে পারে।
+
+---
+
+### 🎥 3. Problem 2: [e.g., Detect Cycle in a Linked List] (Easy/Medium)
+* . **6-Step Sub-Flow:** * * [PROBLEM ANALYSIS → BRUTE FORCE → CLEAN WIPE → OPTIMAL → CODE WALKTHROUGH → CODE SUBMISSION]
+* . **📂 Embedded Resource Room:**
+    * * `<> Language-Specific Practice Arena`
+    * * `<> Parallel Coding Exercise` (যেমন: LeetCode 142 - Linked List Cycle II)
+
+---
+
+### 🎥 4. Problem 3: [e.g., Reverse a Linked List] (Medium)
+* . **6-Step Sub-Flow:** * * [PROBLEM ANALYSIS → BRUTE FORCE → CLEAN WIPE → OPTIMAL → CODE WALKTHROUGH → CODE SUBMISSION]
+* . **📂 Embedded Resource Room:**
+    * * `<> Language-Specific Practice Arena`
+    * * `<> Parallel Coding Exercise` (যেমন: LeetCode 92 - Reverse Linked List II)
+
+---
+
+### 🎥 5. Problem 4: [e.g., Merge Two Sorted Lists] (Medium - Last Video)
+* . **6-Step Sub-Flow:** * * [PROBLEM ANALYSIS → BRUTE FORCE → CLEAN WIPE → OPTIMAL → CODE WALKTHROUGH → CODE SUBMISSION]
+* . **🏆 Integrated Milestone Outro Flow (ভিডিওর শেষ ২ মিনিটে যা এমবেড থাকবে):**
+    * * কোড অ্যাক্সেপ্ট হওয়ার সাথে সাথেই টপ-লেফট ট্র্যাকার ফাইনাল ফেজ 🟢 `CODE SUBMISSION` এ যাবে Lights।
+    * * স্ক্রিনের মাঝখানে গ্রিন কালারে (`#4CAF50`) টাইটেল মাস্কিং হয়ে আসবে: `🏆 SECTION COMPLETE: LINKED LISTS` (৩ সেকেন্ড ধরে থাকবে উইথ Deep Ambient Achievement Swell সাউন্ড)।
+    * * এরপর সিনের ভেতর ডাইনামিকালি পপ-আপ করবে "The Blind Challenges" স্লেট:
+        * * **💪 CHALLENGE YOURSELF (Check Resources to Solve)**
+        * * Challenge 1: LeetCode 234 - Palindrome Linked List (Medium)
+        * * Challenge 2: LeetCode 25 - Reverse Nodes in k-Group (Hard)
+    * * শিক্ষক মুখে বলবেন: "এই ২টা ব্লাইন্ড চ্যালেঞ্জ আপনাদের হোমওয়ার্ক, যার সলিউশন আমাদের গিটহাব রিপোজিটরিতে দেওয়া আছে।"
+    * * শেষ ডায়ালগ: "দেখা হচ্ছে পরবর্তী মডিউলে, যেখানে আমরা শিখব Stacks & Queues।"
+    * * স্ক্রিন সাইলেন্টলি ক্রস-ফেড হয়ে রিভিল করবে: `Next Module: Stacks & Queues` (২ সেকেন্ড) এবং সাথে সাথেই `Smooth Fade to Black (0.5s)` হয়ে ভিডিও শেষ হবে।
+
+---
+
+## 📌 এই রি-অর্গানাইজেশনের মূল ৩টি সুবিধা (Why this clears up everything):
+
+* . **কোনো লুপহোল নেই:** প্রতিটি প্রবলেমের পরপরই স্টুডেন্ট তার পছন্দের প্রোগ্রামিং ল্যাঙ্গুয়েজের সলিউশন ট্যাব এবং একটি করে "Parallel Exercise" (হোমওয়ার্ক) পেয়ে যাচ্ছে, যা তাদের অ্যাক্টিভ কোডিং অভ্যাস ধরে রাখবে।
+* . **ক্লিন ইউজার এক্সপেরিয়েন্স:** "Challenge Yourself" প্রবলেমগুলোর জন্য স্টুডেন্টকে আলাদা কোনো শর্ট ভিডিও বা স্লাইড দেখতে হচ্ছে না; লাস্ট ভিডিওর আউট্রোতেই সে চ্যালেঞ্জগুলো পেয়ে যাচ্ছে এবং সলিউশনের জন্য গিটহাবের ডিরেকশন পাচ্ছে।
+* . **ভিজুয়াল টাইমলাইন ইফেক্ট:** ইনট্রো ভিডিওতেই টাইমলাইনের মাধ্যমে প্রবলেমগুলো দেখানোর কারণে স্টুডেন্ট মানসিকভাবে প্রস্তুত থাকবে যে সে পুরো সেকশনে ঠিক কী কী মাইলস্টোন টাচ করতে যাচ্ছে।
+
+
+
+
+
+
+
