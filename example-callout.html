@@ -1,0 +1,287 @@
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+.wrap { padding: 4px 0 8px; }
+
+.color-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ccard {
+  background: #161618;
+  border-radius: 10px;
+  border: 1px solid #242428;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.18s;
+}
+.ccard:hover { border-color: #444; }
+.ccard.active { border-color: #666; }
+
+.ccard-top {
+  padding: 14px 16px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.dot-preview {
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  margin-top: 2px;
+  flex-shrink: 0;
+  position: relative;
+}
+.dot-preview::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  opacity: 0.25;
+}
+.dot-blue { background: #2196F3; box-shadow: 0 0 0 3px rgba(33,150,243,0.18); }
+.dot-blue::after  { border: 1.5px solid #2196F3; }
+.dot-yellow { background: #FFD700; box-shadow: 0 0 0 3px rgba(255,215,0,0.18); }
+.dot-yellow::after { border: 1.5px solid #FFD700; }
+.dot-red { background: #FF4D4D; box-shadow: 0 0 0 3px rgba(255,77,77,0.18); }
+.dot-red::after { border: 1.5px solid #FF4D4D; }
+.dot-purple { background: #A78BFA; box-shadow: 0 0 0 3px rgba(167,139,250,0.18); }
+.dot-purple::after { border: 1.5px solid #A78BFA; }
+
+.ccard-meta { flex: 1; }
+.ccard-name {
+  font-size: 13px; font-weight: 500;
+  margin: 0 0 3px;
+  font-family: var(--font-sans);
+}
+.ccard-when {
+  font-size: 11px; color: #666;
+  margin: 0;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+.ccard-divider { height: 1px; background: #242428; }
+
+.ccard-bottom {
+  padding: 10px 16px 12px;
+}
+.psych-label {
+  font-size: 10px; color: #555; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin: 0 0 5px;
+  font-family: var(--font-sans);
+}
+.psych-text {
+  font-size: 11px; color: #999; margin: 0; line-height: 1.55;
+  font-family: var(--font-sans);
+}
+
+.example-screen {
+  background: #0e0e10;
+  border-radius: 8px;
+  border: 1px solid #242428;
+  padding: 14px 16px 16px;
+  margin-top: 10px;
+  position: relative;
+  min-height: 120px;
+}
+.ex-label {
+  font-size: 10px; color: #444;
+  font-family: var(--font-mono);
+  margin: 0 0 10px;
+}
+.ex-code {
+  font-family: var(--font-mono);
+  font-size: 11px; color: #3a3a3a;
+  line-height: 1.8; margin: 0;
+}
+.ex-code .kw { color: #1e4a1e; }
+.ex-code .hl { background: rgba(255,255,255,0.04); border-radius: 2px; display: inline-block; width: 100%; padding: 0 2px; }
+
+.callout-preview {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+.cp-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 12px;
+  margin-right: 1px;
+  flex-shrink: 0;
+  position: relative;
+}
+.cp-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.cp-box {
+  background: rgba(24,24,27,0.88);
+  border: 1px solid #2e2e2e;
+  border-radius: 5px;
+  padding: 6px 10px;
+  min-width: 110px;
+}
+.cp-badge {
+  display: inline-block;
+  font-size: 9px; font-weight: 500;
+  padding: 1px 6px; border-radius: 3px;
+  margin-bottom: 4px;
+  font-family: var(--font-sans);
+  letter-spacing: 0.03em;
+}
+.cp-title {
+  font-size: 11px; font-weight: 500; color: #E0E0E0;
+  margin: 0 0 2px; font-family: var(--font-sans);
+}
+.cp-sub {
+  font-size: 10px; color: #777;
+  margin: 0; font-family: var(--font-sans); line-height: 1.4;
+}
+
+.rule-strip {
+  background: #111113;
+  border: 1px solid #1e1e22;
+  border-radius: 8px;
+  padding: 11px 14px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rule-icon { font-size: 15px; color: #555; flex-shrink: 0; }
+.rule-text { font-size: 11px; color: #666; font-family: var(--font-sans); line-height: 1.5; margin: 0; }
+.rule-text strong { color: #999; font-weight: 500; }
+</style>
+
+<h2 class="sr-only">Color psychology guide for course callouts: when to use blue, yellow, red, and purple</h2>
+
+<div class="wrap">
+  <div class="color-row">
+
+    <div class="ccard">
+      <div class="ccard-top">
+        <div class="dot-preview dot-blue"></div>
+        <div class="ccard-meta">
+          <p class="ccard-name" style="color:#5bb3f7">Blue — #2196F3</p>
+          <p class="ccard-when">সাধারণ ব্যাখ্যা, স্টেপ চলছে, নিউট্রাল ইনফো</p>
+        </div>
+      </div>
+      <div class="ccard-divider"></div>
+      <div class="ccard-bottom">
+        <p class="psych-label">সাইকোলজি</p>
+        <p class="psych-text">Blue = বিশ্বাস + শান্ততা। স্টুডেন্টের ব্রেইন রিল্যাক্সড থাকে, নতুন ইনফো সহজে absorb করে। কোনো alert নেই, শুধু "এইটা জানো"।</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <div class="ccard-top">
+        <div class="dot-preview dot-yellow"></div>
+        <div class="ccard-meta">
+          <p class="ccard-name" style="color:#d4a800">Yellow — #FFD700</p>
+          <p class="ccard-when">Complexity দেখানো, সতর্কতা, পারফরম্যান্স নোট</p>
+        </div>
+      </div>
+      <div class="ccard-divider"></div>
+      <div class="ccard-bottom">
+        <p class="psych-label">সাইকোলজি</p>
+        <p class="psych-text">Yellow = সতর্কতা + মনোযোগ। "এইখানে একটু থামো" সিগন্যাল। O(N²) বা nested loop দেখলে yellow ব্যবহার করলে স্টুডেন্ট automatically সিরিয়াস হয়।</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <div class="ccard-top">
+        <div class="dot-preview dot-red"></div>
+        <div class="ccard-meta">
+          <p class="ccard-name" style="color:#ff7777">Red — #FF4D4D</p>
+          <p class="ccard-when">Base case, Error, Edge case, Stack overflow রিস্ক</p>
+        </div>
+      </div>
+      <div class="ccard-divider"></div>
+      <div class="ccard-bottom">
+        <p class="psych-label">সাইকোলজি</p>
+        <p class="psych-text">Red = বিপদ + থামো। ব্রেইনের amygdala সরাসরি activate হয়। শুধু critical condition-এ ব্যবহার করো — overuse করলে effect নষ্ট হয়।</p>
+      </div>
+    </div>
+
+    <div class="ccard">
+      <div class="ccard-top">
+        <div class="dot-preview dot-purple"></div>
+        <div class="ccard-meta">
+          <p class="ccard-name" style="color:#c4b5fd">Purple — #A78BFA</p>
+          <p class="ccard-when">Pro-tip, অপ্টিমাইজেশন, ইন্টার্ভিউ ট্রিক, deeper insight</p>
+        </div>
+      </div>
+      <div class="ccard-divider"></div>
+      <div class="ccard-bottom">
+        <p class="psych-label">সাইকোলজি</p>
+        <p class="psych-text">Purple = প্রিমিয়াম + exclusive। "এইটা সবাই জানে না" feeling তৈরি করে। স্টুডেন্ট মনে রাখে কারণ এটা "special" মনে হয়।</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="example-screen">
+    <p class="ex-label">// live preview — কোড-এ কোন কালার কোথায় বসে</p>
+    <pre class="ex-code"><span class="kw">def </span>binary_search(arr, target):
+  lo, hi = 0, len(arr) - 1
+  <span class="hl">while lo &lt;= hi:         <span style="color:#2a4a2a">← Blue (সাধারণ loop)</span></span>
+    mid = (lo + hi) // 2
+    <span class="hl">if arr[mid] == target:  <span style="color:#4a4a1a">← Yellow (complexity পয়েন্ট)</span></span>
+    <span class="hl">  return -1             <span style="color:#4a1a1a">← Red (base case / not found)</span></span>
+    <span class="hl">  # use lo+(hi-lo)//2   <span style="color:#2a1a4a">← Purple (pro-tip)</span></span></pre>
+
+    <div class="callout-preview">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="cp-dot" style="background:#2196F3;margin-top:0">
+            <span style="position:absolute;inset:-3px;border-radius:50%;border:1.5px solid #2196F3;opacity:0.3"></span>
+          </div>
+          <div class="cp-box">
+            <span class="cp-badge" style="background:#1a2a3a;color:#6cb4f4">INFO</span>
+            <p class="cp-title">Loop চলছে</p>
+            <p class="cp-sub">lo ≤ hi মানে এখনও খোঁজার জায়গা আছে</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="cp-dot" style="background:#FFD700;margin-top:0">
+            <span style="position:absolute;inset:-3px;border-radius:50%;border:1.5px solid #FFD700;opacity:0.3"></span>
+          </div>
+          <div class="cp-box">
+            <span class="cp-badge" style="background:#2a2600;color:#c9a200">O(log N)</span>
+            <p class="cp-title">Half করছে</p>
+            <p class="cp-sub">প্রতিবার search space দুই ভাগ হয়</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="cp-dot" style="background:#FF4D4D;margin-top:0">
+            <span style="position:absolute;inset:-3px;border-radius:50%;border:1.5px solid #FF4D4D;opacity:0.3"></span>
+          </div>
+          <div class="cp-box">
+            <span class="cp-badge" style="background:#2a1a1a;color:#ff7777">BASE CASE</span>
+            <p class="cp-title">পাওয়া যায়নি</p>
+            <p class="cp-sub">−1 return = not found signal</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-strip">
+    <i class="ti ti-bolt rule-icon" aria-hidden="true"></i>
+    <p class="rule-text"><strong>Quick rule:</strong> Blue সবচেয়ে বেশি, Yellow মাঝে মাঝে, Red শুধু critical-এ, Purple সবচেয়ে কম — তাহলে প্রতিটির impact থাকবে।</p>
+  </div>
+</div>

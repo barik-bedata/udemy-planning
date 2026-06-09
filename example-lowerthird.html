@@ -1,0 +1,366 @@
+
+<style>
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeDown { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(18px); } }
+@keyframes dotPop { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.4);opacity:1} 100%{transform:scale(1);opacity:1} }
+@keyframes lineDraw { from{stroke-dashoffset:80} to{stroke-dashoffset:0} }
+@keyframes boxReveal { from{opacity:0;transform:scaleY(0.5);transform-origin:top} to{opacity:1;transform:scaleY(1)} }
+@keyframes glow { 0%,100%{box-shadow:0 0 6px 2px #FFD70055} 50%{box-shadow:0 0 14px 5px #FFD70099} }
+@keyframes pulseRing { 0%{transform:scale(1);opacity:0.7} 100%{transform:scale(2.2);opacity:0} }
+
+.screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #121212;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.code-bg {
+  position: absolute;
+  inset: 0;
+  padding: 24px 32px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: #4a4a4a;
+  pointer-events: none;
+}
+.code-bg .kw { color: #2a5a2a; }
+.code-bg .fn { color: #2a3a5a; }
+.code-bg .cm { color: #333; }
+.code-bg .hl { color: #5a5a2a; }
+
+.lower-third {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  display: flex;
+  align-items: stretch;
+  border-radius: 0 6px 6px 0;
+  overflow: hidden;
+  opacity: 0;
+  min-width: 220px;
+}
+.lt-accent { width: 4px; }
+.lt-body {
+  background: #1E1E1E;
+  padding: 10px 16px 10px 14px;
+}
+.lt-title { font-size: 14px; font-weight: 500; color: #ffffff; margin: 0 0 3px; }
+.lt-sub { font-size: 12px; color: #B0B0B0; margin: 0; }
+
+.lower-third.blue .lt-accent { background: #2196F3; }
+.lower-third.yellow .lt-accent { background: #FFD700; }
+
+.lower-third.in { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+.lower-third.out { animation: fadeDown 0.4s ease-in forwards; }
+
+.callout-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.callout-layer svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+
+.callout-dot {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #FFD700;
+  transform: translate(-50%,-50%) scale(0);
+  opacity: 0;
+}
+.callout-dot.visible { animation: dotPop 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.callout-dot.glow { animation: dotPop 0.35s forwards, glow 1.5s ease-in-out infinite 0.35s; }
+
+.pulse-ring {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #FFD700;
+  transform: translate(-50%,-50%);
+  opacity: 0;
+}
+.pulse-ring.pulse { animation: pulseRing 1s ease-out forwards 0.1s; }
+
+.callout-box {
+  position: absolute;
+  background: rgba(30,30,30,0.88);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 11px;
+  color: #E0E0E0;
+  transform-origin: top left;
+  opacity: 0;
+  transform: scaleY(0.4);
+  min-width: 130px;
+}
+.callout-box.reveal { animation: boxReveal 0.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+.callout-box .cb-title { font-weight: 500; color: #fff; font-size: 12px; margin-bottom: 2px; }
+.callout-box .cb-desc { color: #B0B0B0; font-size: 11px; }
+
+.callout-line {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+}
+.callout-line.draw { animation: lineDraw 0.25s ease-out forwards; }
+
+.step-indicators {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.step-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-border-secondary); transition: background 0.3s; }
+.step-dot.active { background: var(--color-text-primary); }
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.btn {
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn:hover { background: var(--color-background-secondary); }
+.btn:active { transform: scale(0.97); }
+.btn.primary { background: var(--color-text-primary); color: var(--color-background-primary); }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  margin: 0 0 8px;
+}
+.info-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.info-chip {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-border-tertiary);
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+}
+.rule-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+.rule-table td { padding: 8px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; }
+.rule-table td:first-child { color: var(--color-text-primary); font-weight: 500; width: 42%; }
+.rule-table td:last-child { color: var(--color-text-secondary); }
+.rule-table tr:last-child td { border-bottom: none; }
+</style>
+
+<h2 class="sr-only">Lower Third and Call-out Design Guide for #121212 dark-mode course production</h2>
+
+<p class="section-label">লোয়ার থার্ড প্রিভিউ</p>
+
+<div class="step-indicators" id="lt-steps">
+  <div class="step-dot active" id="sd0"></div>
+  <div class="step-dot" id="sd1"></div>
+  <div class="step-dot" id="sd2"></div>
+</div>
+
+<div class="screen" id="main-screen">
+  <div class="code-bg">
+    <span class="cm"># Two Sum — Hash Map Solution</span><br>
+    <span class="kw">def </span><span class="fn">two_sum</span>(nums, target):<br>
+    &nbsp;&nbsp;seen = {}<br>
+    &nbsp;&nbsp;<span class="kw">for </span>i, n <span class="kw">in </span><span class="fn">enumerate</span>(nums):<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;diff = target - n<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="hl">if diff in seen:</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return </span>[seen[diff], i]<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;seen[n] = i<br>
+    &nbsp;&nbsp;<span class="kw">return </span>[]<br>
+  </div>
+
+  <div class="lower-third blue" id="lt-main">
+    <div class="lt-accent"></div>
+    <div class="lt-body">
+      <p class="lt-title" id="lt-title">Two Sum</p>
+      <p class="lt-sub" id="lt-sub">O(N) Time · O(N) Space</p>
+    </div>
+  </div>
+
+  <div class="callout-layer" id="callout-layer">
+    <svg id="callout-svg" viewBox="0 0 640 360" preserveAspectRatio="none">
+      <line id="cl-line" class="callout-line" x1="265" y1="175" x2="380" y2="210"
+        stroke="#FFD700" stroke-width="1.5" fill="none"/>
+    </svg>
+    <div class="callout-dot" id="c-dot" style="left:41.5%;top:48.5%"></div>
+    <div class="pulse-ring" id="c-ring" style="left:41.5%;top:48.5%"></div>
+    <div class="callout-box" id="c-box" style="left:60%;top:54%">
+      <div class="cb-title">핵심 조건 체크</div>
+      <div class="cb-desc">이미 본 숫자인지 확인</div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn primary" id="play-btn" onclick="runDemo()">▶ অ্যানিমেশন দেখাও</button>
+  <button class="btn" onclick="switchType('blue')">Blue (সাধারণ)</button>
+  <button class="btn" onclick="switchType('yellow')">Yellow (কমপ্লেক্সিটি)</button>
+  <button class="btn" onclick="showCallout()">কল-আউট দেখাও</button>
+</div>
+
+<div class="info-row">
+  <div class="info-chip">Ease-Out · 0.5s</div>
+  <div class="info-chip">Bottom-Left placement</div>
+  <div class="info-chip">3-step callout</div>
+  <div class="info-chip">#1E1E1E container</div>
+</div>
+
+<p class="section-label" style="margin-top:20px">কগনিটিভ লোড রুলস</p>
+<table class="rule-table">
+  <tr>
+    <td>No screen clutter</td>
+    <td>লোয়ার থার্ড ও কল-আউট একসাথে নয়। একটি দেখালে অন্যটি ফেড-আউট।</td>
+  </tr>
+  <tr>
+    <td>Duration limit</td>
+    <td>কল-আউট সর্বোচ্চ ৫-৭ সেকেন্ড। পরে স্ক্রিন ক্লিন করুন।</td>
+  </tr>
+  <tr>
+    <td>Avoid bounding boxes</td>
+    <td>ভারী সলিড বক্স নয়। ডার্ক অপাসিটি বা ব্লার ব্যবহার করুন।</td>
+  </tr>
+</table>
+
+<script>
+let currentType = 'blue';
+let demoRunning = false;
+let calloutShown = false;
+
+function setStepDots(active) {
+  for(let i=0;i<3;i++) {
+    const el = document.getElementById('sd'+i);
+    if(el) el.classList.toggle('active', i===active);
+  }
+}
+
+function switchType(type) {
+  currentType = type;
+  const lt = document.getElementById('lt-main');
+  lt.classList.remove('blue','yellow','in','out');
+  lt.style.opacity = '0';
+  if(type === 'blue') {
+    document.getElementById('lt-title').textContent = 'Two Sum';
+    document.getElementById('lt-sub').textContent = 'O(N) Time · O(N) Space';
+  } else {
+    document.getElementById('lt-title').textContent = 'Warning: Nested Loop';
+    document.getElementById('lt-sub').textContent = 'O(N²) — Brute Force';
+  }
+  setTimeout(() => {
+    lt.classList.add(type, 'in');
+    setStepDots(type === 'blue' ? 0 : 1);
+  }, 80);
+}
+
+function resetCallout() {
+  const dot = document.getElementById('c-dot');
+  const ring = document.getElementById('c-ring');
+  const box = document.getElementById('c-box');
+  const line = document.getElementById('cl-line');
+  dot.className = 'callout-dot';
+  ring.className = 'pulse-ring';
+  box.className = 'callout-box';
+  line.className = 'callout-line';
+  dot.style.opacity = '0';
+  dot.style.transform = 'translate(-50%,-50%) scale(0)';
+  box.style.opacity = '0';
+  calloutShown = false;
+}
+
+function showCallout() {
+  if(calloutShown) { resetCallout(); return; }
+  calloutShown = true;
+
+  const lt = document.getElementById('lt-main');
+  lt.classList.remove('in');
+  lt.classList.add('out');
+  setTimeout(() => { lt.style.opacity='0'; lt.classList.remove('out'); }, 400);
+
+  setStepDots(2);
+
+  const dot = document.getElementById('c-dot');
+  const ring = document.getElementById('c-ring');
+  const line = document.getElementById('cl-line');
+  const box = document.getElementById('c-box');
+
+  setTimeout(() => {
+    dot.style.opacity = '1';
+    dot.style.transform = 'translate(-50%,-50%) scale(0)';
+    dot.classList.add('glow');
+    ring.classList.add('pulse');
+  }, 100);
+
+  setTimeout(() => {
+    line.classList.add('draw');
+  }, 450);
+
+  setTimeout(() => {
+    box.classList.add('reveal');
+  }, 700);
+
+  setTimeout(() => {
+    resetCallout();
+    switchType(currentType);
+  }, 5500);
+}
+
+function runDemo() {
+  if(demoRunning) return;
+  demoRunning = true;
+  const btn = document.getElementById('play-btn');
+  btn.disabled = true;
+
+  resetCallout();
+
+  const lt = document.getElementById('lt-main');
+  lt.classList.remove('in','out','blue','yellow');
+  lt.style.opacity = '0';
+
+  setStepDots(0);
+
+  setTimeout(() => {
+    switchType('blue');
+  }, 400);
+
+  setTimeout(() => {
+    const lt2 = document.getElementById('lt-main');
+    lt2.classList.add('out');
+    setTimeout(() => { lt2.style.opacity='0'; lt2.classList.remove('out','blue'); }, 400);
+  }, 2400);
+
+  setTimeout(() => {
+    switchType('yellow');
+    setStepDots(1);
+  }, 3000);
+
+  setTimeout(() => {
+    showCallout();
+  }, 5200);
+
+  setTimeout(() => {
+    demoRunning = false;
+    btn.disabled = false;
+  }, 11000);
+}
+</script>

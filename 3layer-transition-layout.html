@@ -1,0 +1,274 @@
+
+<style>
+  .demo-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 1rem 0;
+  }
+  .screen-box {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background: #121212;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 0.5px solid var(--color-border-tertiary);
+    cursor: pointer;
+  }
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    transition: opacity 0.1s;
+  }
+  .scene-a .code-block {
+    background: #1e1e2e;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 14px 20px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #cdd6f4;
+    line-height: 1.6;
+    text-align: left;
+    min-width: 260px;
+  }
+  .scene-b .code-block {
+    background: #1e1e2e;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 14px 20px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #a6e3a1;
+    line-height: 1.6;
+    text-align: left;
+    min-width: 260px;
+  }
+  .label-top {
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    font-size: 11px;
+    color: #666;
+    letter-spacing: 0.05em;
+    font-family: var(--font-mono);
+  }
+  .layer {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 0;
+  }
+  .layer-gray {
+    background: #2C2C2C;
+    width: 100%;
+    left: -100%;
+  }
+  .layer-blue {
+    background: #2196F3;
+    width: 100%;
+    left: -100%;
+  }
+  .layer-yellow {
+    background: #FFD700;
+    width: 8px;
+    left: -8px;
+  }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  button.play-btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+  }
+  button.play-btn:hover {
+    background: var(--color-background-tertiary);
+  }
+  .speed-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+  }
+  .speed-row label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+  .speed-row input { width: 120px; }
+  #speed-val {
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 38px;
+    color: var(--color-text-primary);
+  }
+  .layer-labels {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .ll {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .ll-g { background: #2C2C2C; color: #aaa; }
+  .ll-b { background: #2196F3; color: #fff; }
+  .ll-y { background: #FFD700; color: #444; }
+</style>
+
+<div class="demo-wrap">
+  <div class="screen-box" id="screen">
+    <div class="label-top" id="screen-label">scene a — previous topic</div>
+    <div class="scene scene-a" id="scene-a">
+      <div class="code-block">
+        <span style="color:#f38ba8">for</span> i <span style="color:#cba6f7">in</span> range(<span style="color:#fab387">5</span>):<br>
+        &nbsp;&nbsp;<span style="color:#89dceb">print</span>(i)
+      </div>
+    </div>
+    <div class="scene scene-b" id="scene-b" style="opacity:0;">
+      <div class="code-block">
+        <span style="color:#89dceb">def</span> <span style="color:#a6e3a1">greet</span>(name):<br>
+        &nbsp;&nbsp;<span style="color:#89dceb">return</span> <span style="color:#f9e2af">"Hello, " </span>+ name
+      </div>
+    </div>
+    <div class="layer layer-gray" id="l-gray"></div>
+    <div class="layer layer-blue" id="l-blue"></div>
+    <div class="layer layer-yellow" id="l-yellow"></div>
+    <div class="layer-labels">
+      <div class="ll ll-g" id="ll-g">layer 1 — sweep</div>
+      <div class="ll ll-b" id="ll-b">layer 2 — process</div>
+      <div class="ll ll-y" id="ll-y">layer 3 — focus</div>
+    </div>
+  </div>
+
+  <div class="speed-row">
+    <label>Speed</label>
+    <input type="range" min="0.4" max="2.5" step="0.1" value="1" id="speed-slider">
+    <span id="speed-val">1.0×</span>
+  </div>
+
+  <div class="btn-row">
+    <button class="play-btn" id="play-btn">▶ Play transition</button>
+    <button class="play-btn" id="reset-btn">↺ Reset</button>
+  </div>
+</div>
+
+<script>
+const gray = document.getElementById('l-gray');
+const blue = document.getElementById('l-blue');
+const yellow = document.getElementById('l-yellow');
+const sceneA = document.getElementById('scene-a');
+const sceneB = document.getElementById('scene-b');
+const lbl = document.getElementById('screen-label');
+const playBtn = document.getElementById('play-btn');
+const resetBtn = document.getElementById('reset-btn');
+const speedSlider = document.getElementById('speed-slider');
+const speedVal = document.getElementById('speed-val');
+const llg = document.getElementById('ll-g');
+const llb = document.getElementById('ll-b');
+const lly = document.getElementById('ll-y');
+
+let running = false;
+
+speedSlider.addEventListener('input', () => {
+  speedVal.textContent = parseFloat(speedSlider.value).toFixed(1) + '×';
+});
+
+function resetAll() {
+  gray.style.transition = 'none';
+  blue.style.transition = 'none';
+  yellow.style.transition = 'none';
+  gray.style.left = '-100%';
+  blue.style.left = '-100%';
+  yellow.style.left = '-8px';
+  yellow.style.width = '8px';
+  sceneA.style.opacity = '1';
+  sceneB.style.opacity = '0';
+  lbl.textContent = 'scene a — previous topic';
+  llg.style.opacity = '0';
+  llb.style.opacity = '0';
+  lly.style.opacity = '0';
+  running = false;
+  playBtn.disabled = false;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function playTransition() {
+  if (running) return;
+  running = true;
+  playBtn.disabled = true;
+  const spd = parseFloat(speedSlider.value);
+  const t = (ms) => ms / spd;
+
+  lbl.textContent = 'transition running…';
+
+  gray.style.transition = 'none'; gray.style.left = '-100%';
+  blue.style.transition = 'none'; blue.style.left = '-100%';
+  yellow.style.transition = 'none'; yellow.style.left = '-8px'; yellow.style.width = '8px';
+
+  await sleep(60);
+
+  llg.style.opacity = '1';
+  gray.style.transition = `left ${t(380)}ms cubic-bezier(0.4,0,0.2,1)`;
+  gray.style.left = '0%';
+  await sleep(t(200));
+
+  llb.style.opacity = '1';
+  blue.style.transition = `left ${t(360)}ms cubic-bezier(0.4,0,0.2,1)`;
+  blue.style.left = '0%';
+  await sleep(t(200));
+
+  lly.style.opacity = '1';
+  yellow.style.transition = `left ${t(300)}ms cubic-bezier(0.4,0,0.2,1)`;
+  yellow.style.left = '0%';
+  await sleep(t(80));
+
+  sceneA.style.opacity = '0';
+  sceneB.style.opacity = '1';
+  lbl.textContent = 'scene b — new topic';
+
+  await sleep(t(260));
+
+  gray.style.transition = `left ${t(340)}ms cubic-bezier(0.4,0,0.2,1)`;
+  blue.style.transition = `left ${t(310)}ms cubic-bezier(0.4,0,0.2,1)`;
+  yellow.style.transition = `left ${t(260)}ms cubic-bezier(0.4,0,0.2,1), width ${t(180)}ms ease`;
+
+  gray.style.left = '100%';
+  await sleep(t(30));
+  blue.style.left = '100%';
+  await sleep(t(20));
+  yellow.style.width = '4px';
+  yellow.style.left = '100%';
+
+  await sleep(t(380));
+  llg.style.opacity = '0';
+  llb.style.opacity = '0';
+  lly.style.opacity = '0';
+  running = false;
+  playBtn.disabled = false;
+}
+
+playBtn.addEventListener('click', playTransition);
+resetBtn.addEventListener('click', resetAll);
+</script>
